@@ -6,6 +6,10 @@
     "start": "electron ."
   },
   "dependencies": {
-    "electron": "^11.3.0"
+    "electron": "^11.3.0",
+    "electron-db": "^0.15.7",
+    "nedb-promises": "^4.1.1",
+    "youtube-dl-exec": "^1.0.0",
+    "ytdl-core": "^4.5.0"
   }
 }
