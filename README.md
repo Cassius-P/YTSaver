@@ -1,7 +1,7 @@
 # YTSaver
 Electron app for saving as list YT videos & downloading them
 
-##Installation
+## Installation
 After cloning the repo install npm dependencies
 ```shell
 $ npm i
