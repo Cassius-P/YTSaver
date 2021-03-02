@@ -9,7 +9,7 @@ $ npm i
 Then init tailwindcss and build the CSS file
 ```shell
 $ tailwind init
-$ tailwind build assets/css/tailwind.css
+$ tailwind build -o path/to/your/file/tailwind.css
 ```
 
 Now you're good to go
