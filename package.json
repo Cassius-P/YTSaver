@@ -6,9 +6,14 @@
     "start": "electron ."
   },
   "dependencies": {
+    "@corollarium/youtubedl-wrapper": "^1.0.9",
     "electron": "^11.3.0",
     "electron-db": "^0.15.7",
+    "fs": "^0.0.1-security",
     "nedb-promises": "^4.1.1",
+    "progress-stream": "^2.0.0",
+    "slugify": "^1.4.7",
+    "tailwindcss": "^2.0.3",
     "youtube-dl-exec": "^1.0.0",
     "ytdl-core": "^4.5.0"
   }
