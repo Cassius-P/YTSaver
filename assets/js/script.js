@@ -100,7 +100,24 @@ function deleteVideo(elmt){
 }
 
 ipcRenderer.on('download', (event, message) => {
-    console.log(message) // Prints 'whoooooooh!'
+    let dlManager = document.querySelector('#dlManager');
+    let progress = dlManager.querySelector('#progress')
+    let filePath = dlManager.querySelector('#filePath')
+    let videoName = dlManager.querySelector('#videoName')
+    if(message == true){
+        //display download manager
+        dlManager.classList.remove("hidden")
+    }else {
+        filePath.innerHTML = message[1];
+        videoName.innerHTML = message[0];
+        progress.style.width = message[2]+"%"
+
+        if(message[2] == 100){
+            setTimeout(()=>{
+               dlManager.classList.add('hidden')
+            },2000)
+        }
+    }
 })
 
 

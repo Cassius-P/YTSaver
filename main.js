@@ -1,9 +1,9 @@
 const {app, BrowserWindow, ipcMain, dialog } = require('electron')
 
 //Youtube
-//const youtubedl = require('youtube-dl-exec')
+const youtubedl = require('youtube-dl')
 const ytdl = require('ytdl-core');
-const youtubedl = require('@corollarium/youtubedl-wrapper')
+//const youtubedl = require('youtube-dl')
 
 //Utils
 const slugify = require('slugify')
@@ -78,6 +78,7 @@ ipcMain.handle('getInfosFromUrl', (event, args) => {
 
         let infos = new Object();
 
+
         infos.title = videoInfo.videoDetails.title;
         infos.url = videoInfo.videoDetails.video_url;
         infos.owner = videoInfo.videoDetails.ownerChannelName;
@@ -123,22 +124,35 @@ ipcMain.handle('downloadVideo', (event, args) => {
     let fileName = slugify(args[1], '_')
     let infos = dialog.showSaveDialog({defaultPath: fileName+".mp4", title: fileName}).then((i)=>{
         if(!i.canceled){
-            let f = fs.createWriteStream(i.filePath)
-            var stat = fs.statSync(i.filePath);
-            var str = progress({
-                length: stat.size,
-                time: 100 /* ms */
-            });
-            /*ytdl(args[0]).pipe(f)*/
+            const video = youtubedl(args[0])
+            video.on('info', (info)=>{
+                win.webContents.send('download', true)
+                str.on('progress', function(progress) {
+                    let max = info.size
+                    let currentValue = progress.transferred
+                    let percent = Math.round((currentValue / max) * 100)
 
-            let dl = new youtubedl.Youtubedl()
-            let doDownload = dl.download(args[0], fileName, ["-f", "best"])
+                    console.log(percent+ "%");
+                    win.webContents.send('download', [args[1], i.filePath, percent])
 
-            doDownload.on("download", data => {
-                console.log(
-                    `${data.progress}% downloaded, ETA ${data.ETA}, speed ${data.speed}${data.speedUnit}, downloaded bytes ${data.downloaded}${data.downloadedUnit}`
-                );
+                });
+            })
+
+
+            let str = progress({
+                time: 100
             });
+
+
+// Will be called when the download starts.
+
+            let write = fs.createWriteStream(i.filePath);
+
+
+            let dl = video.pipe(str).pipe(write)
+
+
+
         }
     })
 
