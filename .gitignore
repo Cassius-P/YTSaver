@@ -2,6 +2,7 @@
 /node_modules
 .idea
 /assets/css/tailwind.css
+listdl.json
 # Logs
 logs
 *.log
